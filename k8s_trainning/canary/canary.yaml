@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+spec:
+  replicas: 8
+  selector:
+    matchLabels:
+      app: nginx-app
+  template:
+    metadata:
+      name: nginx-pod
+      labels:
+        app: nginx-app
+    spec:
+      containers:
+      - name: mynginx-con
+        image: nginx:1.16.0
+        ports:
+        - containerPort: 80
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-service-lb
+spec:
+  type: NodePort
+  selector:
+    app: nginx-app
+  ports:
+    - protocol: TCP
+      nodePort: 32000
+      port: 8080
+      targetPort: 80
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment-canary
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: nginx-app
+  template:
+    metadata:
+      name: nginx-pod
+      labels:
+        app: nginx-app
+    spec:
+      containers:
+        - name: mynginx-con
+          image: httpd
+          ports:
+          - containerPort: 80

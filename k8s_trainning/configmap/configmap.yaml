@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mysettings-config1
+  namespace: development
+data:
+  name: SONI
+  location: INDIA
+
+---
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mysettings-config1
+  namespace: production
+data:
+  name: Sandeep
+  location: USA
